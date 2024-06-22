@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}
+Home
+{% endblock %}
+{% block content %}
+<div align="center" >
+    <br>
+<h1>Generate Random Cat Facts</h1>
+    <br>
+
+<img src="{{ image }}" width="600" height="422">
+    <br>
+    <br>
+<h3>{{ fact }}</h3>
+    <br>
+    <br>
+
+    {% if session.get('logged_in') %}
+
+<h4>You Like This Fact? <button onclick="saveFact('{{ fact }}','{{ image }}')">Save It!</button></h4>
+
+{% else %}
+<h4>You Like This Fact? <a href="/login">Login</a>/<a href="/register">Register</a> To Save It!</h4>
+{% endif %}
+    <br>
+    <br>
+    <h4>You Don't Like This Fact? <button onclick="generateNew()" style="background-color: green">Generate A New One!</button></h4>
+
+</div>
+
+<script>
+
+    function generateNew(){
+        location.reload();
+    }
+
+    function saveFact(fact,image){
+        const url = '/save';
+
+// Data to be sent in the body of the request (can be JSON, FormData, etc.)
+const postData = {
+  fact: fact,
+  image: image
+};
+
+// Configuration for the fetch request
+const fetchOptions = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json' // Specify content type JSON or other as needed
+  },
+  body: JSON.stringify(postData) // Convert JavaScript object to JSON string
+};
+
+// Send the POST request
+fetch(url, fetchOptions)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json(); // Parse the JSON response
+  })
+  .then(data => {
+    console.log('POST request succeeded with JSON response', data);
+    // Handle the data returned by the server
+  })
+  .catch(error => {
+    console.error('Error encountered during POST request:', error);
+    // Handle errors
+  });
+location.reload()
+    }
+</script>
+
+{% endblock %}

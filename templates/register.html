@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}
+Register
+{% endblock %}
+{% block content %}
+
+ <div class="login-container">
+        <form class="login-form" action="" method="post">
+            <h2>Register your account!</h2>
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Register</button>
+        </form>
+<br>
+     {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <p style="color: red">{{ msg }}</p>
+            {% endfor %}
+        {% endif %}
+     {% endwith %}
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}
+My Page
+{% endblock %}
+{% block content %}
+<div align="center">
+<h1>Welcome, {{ session['username'] }}</h1>
+
+{% for fact in facts %}
+<br>
+<img src="{{ fact.image }}" width="300" height="200">
+<h4>{{ fact.fact }}</h4>
+<button onclick="deleteFact('{{ fact.id }}')" style="background-color: red">Delete This Fact!</button>
+<br>
+    <br>
+{% endfor %}
+</div>
+
+<script>
+    function deleteFact(fact_id){
+        if (confirm("Are you sure that you want to delete this fact?")){
+                    const url = '/delete';
+
+// Data to be sent in the body of the request (can be JSON, FormData, etc.)
+const postData = {
+  fact_id: fact_id,
+
+};
+
+// Configuration for the fetch request
+const fetchOptions = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json' // Specify content type JSON or other as needed
+  },
+  body: JSON.stringify(postData) // Convert JavaScript object to JSON string
+};
+
+// Send the POST request
+fetch(url, fetchOptions)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json(); // Parse the JSON response
+  })
+  .then(data => {
+    console.log('POST request succeeded with JSON response', data);
+    // Handle the data returned by the server
+  })
+  .catch(error => {
+    console.error('Error encountered during POST request:', error);
+    // Handle errors
+  });
+
+location.href = location.href
+
+        }
+    }
+
+</script>
+{% endblock %}
